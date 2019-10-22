@@ -1,6 +1,6 @@
 package whu.cdc.vaccine.movingEntities;
 
-class Service {
+public class Service {
     private double x;
     private double y;
     private int numberOfEmployees;

@@ -1,8 +1,8 @@
 package whu.cdc.vaccine.movingEntities;
 
-class Child {
+public class Child {
     private double x;
     private double y;
     private double avgSpeed;
-    
+
 }

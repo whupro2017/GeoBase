@@ -1,5 +1,7 @@
 package whu.cdc.vaccine;
 
-class ServiceGenerator {
+import whu.cdc.vaccine.movingEntities.Service;
+
+public class ServiceGenerator {
     private Service service;
 }
