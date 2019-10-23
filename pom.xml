@@ -34,7 +34,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <geobase.version>0.0.1-SHAPSHOT</geobase.version>
-        <geotools.version>23-SNAPSHOT</geotools.version>
+        <geotools.version>22.0</geotools.version>
     </properties>
 
     <dependencies>
@@ -63,6 +63,41 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-nop</artifactId>
             <version>1.7.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-data</artifactId>
+            <version>20.5</version>
+        </dependency>
+        <!--dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-api</artifactId>
+            <version>20.5</version>
+        </dependency-->
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-referencing</artifactId>
+            <version>${geotools.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-metadata</artifactId>
+            <version>${geotools.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-render</artifactId>
+            <version>${geotools.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-geometry</artifactId>
+            <version>${geotools.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-main</artifactId>
+            <version>${geotools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.geotools</groupId>

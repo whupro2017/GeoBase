@@ -51,7 +51,7 @@ public class ShapeGraph {
 
     public static void main(String[] argv) throws IOException {
 
-        File file = new File("./resources/shapes/bj_shp/市区道路_polyline.shp");
+        /*File file = new File("./resources/shapes/bj_shp/市区道路_polyline.shp");
         Map<String, Object> map = new HashMap<>();
         map.put("url", file.toURI().toURL());
 
@@ -64,73 +64,12 @@ public class ShapeGraph {
         FeatureCollection<SimpleFeatureType, SimpleFeature> collection = source.getFeatures();
 
         final LineGraphGenerator generator = new BasicLineGraphGenerator();
-        SimpleFeatureCollection fc = new SimpleFeatureCollection() {
-            @Override
-            public SimpleFeatureIterator features() {
-                return null;
-            }
-
-            @Override
-            public SimpleFeatureCollection subCollection(Filter filter) {
-                return null;
-            }
-
-            @Override
-            public SimpleFeatureCollection sort(SortBy sortBy) {
-                return null;
-            }
-
-            @Override
-            public SimpleFeatureType getSchema() {
-                return null;
-            }
-
-            @Override
-            public String getID() {
-                return null;
-            }
-
-            @Override
-            public void accepts(FeatureVisitor featureVisitor, ProgressListener progressListener) throws IOException {
-
-            }
-
-            @Override
-            public ReferencedEnvelope getBounds() {
-                return null;
-            }
-
-            @Override
-            public boolean contains(Object o) {
-                return false;
-            }
-
-            @Override
-            public boolean containsAll(Collection<?> collection) {
-                return false;
-            }
-
-            @Override
-            public boolean isEmpty() {
-                return false;
-            }
-
-            @Override
-            public int size() {
-                return 0;
-            }
-
-            @Override
-            public Object[] toArray() {
-                return new Object[0];
-            }
-
-            @Override
-            public <O> O[] toArray(O[] os) {
-                return null;
-            }
-        };
-
+        SimpleFeatureCollection fc = source.getFeatures();*/
+        File file = new File("./resources/shapes/bj_shp/市区道路_polyline.shp");
+        FileDataStore store = FileDataStoreFinder.getDataStore(file);
+        SimpleFeatureSource featureSource = store.getFeatureSource();
+        SimpleFeatureCollection fc = featureSource.getFeatures();
+        final LineGraphGenerator generator = new BasicLineGraphGenerator();
         fc.accepts(
                 new FeatureVisitor() {
                     public void visit(Feature feature) {
