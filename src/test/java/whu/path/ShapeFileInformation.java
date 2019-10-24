@@ -13,15 +13,16 @@ import org.opengis.filter.Filter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ShapeFileInformation {
+    private static String shpPath = "./resources/shapes/sz_shp/乡镇村道_polyline.shp";
+    private static String dbfPath = "./resources/shapes/sz_shp/乡镇村道_polyline.dbf";
 
     private static void readFeatures() throws IOException {
-        File file = new File("./resources/shapes/bj_shp/市区道路_polyline.shp");
+        File file = new File(shpPath);
         Map<String, Object> map = new HashMap<>();
         map.put("url", file.toURI().toURL());
 
@@ -44,7 +45,7 @@ public class ShapeFileInformation {
     }
 
     private static void readDBF() throws IOException {
-        File file = new File("./resources/shapes/bj_shp/市区道路_polyline.shp");
+        File file = new File(shpPath);
         FileDataStore myData = FileDataStoreFinder.getDataStore(file);
         SimpleFeatureSource source = myData.getFeatureSource();
         SimpleFeatureType schema = source.getSchema();
@@ -66,7 +67,7 @@ public class ShapeFileInformation {
     }
 
     private static void infoDBF() throws IOException {
-        FileInputStream fis = new FileInputStream("./resources/shapes/bj_shp/市区道路_polyline.dbf");
+        FileInputStream fis = new FileInputStream(dbfPath);
         DbaseFileReader dbfReader = new DbaseFileReader(fis.getChannel(), false, Charset.forName("ISO-8859-1"));
         int fid = 0;
         while (dbfReader.hasNext()) {
@@ -75,6 +76,7 @@ public class ShapeFileInformation {
             for (Object obj : fields) {
                 System.out.println(fid + " DBF field " + oid++ + " value is: " + (String) obj);
             }
+            fid++;
         }
 
         dbfReader.close();
@@ -82,8 +84,15 @@ public class ShapeFileInformation {
     }
 
     public static void main(String[] argv) throws IOException {
-        /*readFeatures();
-        readDBF();*/
+        if (argv.length >= 1) {
+            shpPath = argv[0];
+            shpPath += ".shp";
+            dbfPath = argv[0];
+            dbfPath += ".dbf";
+        }
+        System.out.println(shpPath + "<->" + dbfPath);
+        readFeatures();
+        readDBF();
         infoDBF();
     }
 }
