@@ -1,6 +1,7 @@
 package whu.path;
 
 import org.geotools.data.*;
+import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.shapefile.dbf.DbaseFileReader;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.FeatureCollection;
@@ -25,6 +26,7 @@ public class ShapeFileInformation {
         File file = new File(shpPath);
         Map<String, Object> map = new HashMap<>();
         map.put("url", file.toURI().toURL());
+        map.put("charset", "GB2312");
 
         DataStore dataStore = DataStoreFinder.getDataStore(map);
         String typeName = dataStore.getTypeNames()[0];
@@ -47,6 +49,7 @@ public class ShapeFileInformation {
     private static void readDBF() throws IOException {
         File file = new File(shpPath);
         FileDataStore myData = FileDataStoreFinder.getDataStore(file);
+        ((ShapefileDataStore) myData).setCharset(Charset.forName("GB2312"));
         SimpleFeatureSource source = myData.getFeatureSource();
         SimpleFeatureType schema = source.getSchema();
 
@@ -68,7 +71,7 @@ public class ShapeFileInformation {
 
     private static void infoDBF() throws IOException {
         FileInputStream fis = new FileInputStream(dbfPath);
-        DbaseFileReader dbfReader = new DbaseFileReader(fis.getChannel(), false, Charset.forName("ISO-8859-1"));
+        DbaseFileReader dbfReader = new DbaseFileReader(fis.getChannel(), false, Charset.forName("GB2312"));
         int fid = 0;
         while (dbfReader.hasNext()) {
             final Object[] fields = dbfReader.readEntry();
