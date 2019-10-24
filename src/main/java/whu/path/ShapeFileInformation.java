@@ -19,10 +19,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ShapeFileInformation {
-    private static String shpPath = "./resources/shapes/sz_shp/乡镇村道_polyline.shp";
-    private static String dbfPath = "./resources/shapes/sz_shp/乡镇村道_polyline.dbf";
+    private String shpPath = "./resources/shapes/sz_shp/乡镇村道_polyline.shp";
+    private String dbfPath = "./resources/shapes/sz_shp/乡镇村道_polyline.dbf";
 
-    private static void readFeatures() throws IOException {
+    public ShapeFileInformation() {
+    }
+
+    public ShapeFileInformation(String shpPath, String dbfPath) {
+        this.shpPath = shpPath;
+        this.dbfPath = dbfPath;
+    }
+
+    public String info() {
+        return shpPath + "<->" + dbfPath;
+    }
+
+    public void readFeatures() throws IOException {
         File file = new File(shpPath);
         Map<String, Object> map = new HashMap<>();
         map.put("url", file.toURI().toURL());
@@ -46,11 +58,8 @@ public class ShapeFileInformation {
         dataStore.dispose();
     }
 
-    private static void readDBF() throws IOException {
-        File file = new File(shpPath);
-        FileDataStore myData = FileDataStoreFinder.getDataStore(file);
-        ((ShapefileDataStore) myData).setCharset(Charset.forName("GB2312"));
-        SimpleFeatureSource source = myData.getFeatureSource();
+    public void readDBF() throws IOException {
+        SimpleFeatureSource source = ShapeFileManager.getFeatureSource(shpPath);
         SimpleFeatureType schema = source.getSchema();
 
         Query query = new Query(schema.getTypeName());
@@ -66,10 +75,10 @@ public class ShapeFileInformation {
                 }
             }
         }
-        myData.dispose();
+        ShapeFileManager.disposeFeatureSource(source);
     }
 
-    private static void infoDBF() throws IOException {
+    public void infoDBF() throws IOException {
         FileInputStream fis = new FileInputStream(dbfPath);
         DbaseFileReader dbfReader = new DbaseFileReader(fis.getChannel(), false, Charset.forName("GB2312"));
         int fid = 0;
@@ -84,18 +93,5 @@ public class ShapeFileInformation {
 
         dbfReader.close();
         fis.close();
-    }
-
-    public static void main(String[] argv) throws IOException {
-        if (argv.length >= 1) {
-            shpPath = argv[0];
-            shpPath += ".shp";
-            dbfPath = argv[0];
-            dbfPath += ".dbf";
-        }
-        System.out.println(shpPath + "<->" + dbfPath);
-        readFeatures();
-        readDBF();
-        infoDBF();
     }
 }
