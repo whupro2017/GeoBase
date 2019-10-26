@@ -32,7 +32,8 @@ public class ShapeGraphViewer extends JComponent {
         this.graph = graph;
     }
 
-    @Override public void paint(Graphics g) {
+    @Override
+    public void paint(Graphics g) {
         Graph sg = graph.getGraph();
         Collection<Node> nodes = sg.getNodes();
         double minLongitude = Double.MAX_VALUE;
@@ -95,7 +96,11 @@ public class ShapeGraphViewer extends JComponent {
     }
 
     public static void main(String[] args) throws IOException {
-        ShapeGraph sg = new ShapeGraph();
+        ShapeGraph sg;
+        if (args.length == 0)
+            sg = new ShapeGraph();
+        else
+            sg = new ShapeGraph(args[0]);
         sg.build();
         JFrame frame = new JFrame("Draw GeneralPath Demo");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
