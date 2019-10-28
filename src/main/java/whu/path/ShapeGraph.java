@@ -64,7 +64,25 @@ public class ShapeGraph {
         SimpleFeatureSource source = ShapeFileManager.getFeatureSource(path);
         SimpleFeatureCollection fc = source.getFeatures();
 
+        //create a linear graph generate
         LineStringGraphGenerator lineStringGen = new LineStringGraphGenerator();
+
+        //wrap it in a feature graph generator
+        FeatureGraphGenerator featureGen = new FeatureGraphGenerator(lineStringGen);
+
+        //throw all the features into the graph generator
+        FeatureIterator iter = fc.features();
+        try {
+            while (iter.hasNext()) {
+                Feature feature = iter.next();
+                featureGen.add(feature);
+            }
+        } finally {
+            iter.close();
+        }
+        graph = featureGen.getGraph();
+
+        /*LineStringGraphGenerator lineStringGen = new LineStringGraphGenerator();
         FeatureGraphGenerator featureGen = new FeatureGraphGenerator(lineStringGen);
         FeatureIterator iter = fc.features();
 
@@ -74,12 +92,16 @@ public class ShapeGraph {
 
         iter.close();
 
-        graph = featureGen.getGraph();
+        graph = featureGen.getGraph();*/
         ShapeFileManager.disposeFeatureSource(source);
     }
 
     public Graph getGraph() {
         return graph;
+    }
+
+    public void setGraph(Graph graph) {
+        this.graph = graph;
     }
 
     public void traverse() {
