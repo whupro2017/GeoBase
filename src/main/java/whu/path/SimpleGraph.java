@@ -1,6 +1,7 @@
 package whu.path;
 
 import org.geotools.graph.path.DijkstraShortestPathFinder;
+import org.geotools.graph.path.Path;
 import org.geotools.graph.structure.*;
 import org.geotools.graph.traverse.GraphIterator;
 import org.geotools.graph.traverse.GraphTraversal;
@@ -8,12 +9,16 @@ import org.geotools.graph.traverse.basic.BasicGraphTraversal;
 import org.geotools.graph.traverse.basic.SimpleGraphWalker;
 import org.geotools.graph.traverse.standard.BreadthFirstIterator;
 import org.geotools.graph.traverse.standard.DijkstraIterator;
+import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class SimpleGraph {
+    protected static final Logger LOGGER = Logging.getLogger(SimpleGraph.class);
     private Graph graph;
 
     public Graph getGraph() {
@@ -47,15 +52,16 @@ public class SimpleGraph {
         SimpleGraphWalker sgv = new SimpleGraphWalker(graphVisitor);
         GraphIterator iterator = new BreadthFirstIterator();
         BasicGraphTraversal bgt = new BasicGraphTraversal(graph, sgv, iterator);
-
+        for (Node node : graph.getNodes()) {
+            ((BreadthFirstIterator) iterator).setSource(node);
+            break;
+        }
         bgt.traverse();
 
-        System.out.println("Found orphans: " + graphVisitor.getCount());
+        LOGGER.log(Level.INFO, "Found orphans: " + graphVisitor.getCount());
     }
 
-    public void shortestPath() {
-        Node start = null;
-
+    public Path shortestPath(Node start, Node end) {
         DijkstraIterator.EdgeWeighter weighter = new DijkstraIterator.EdgeWeighter() {
             public double getWeight(Edge e) {
                 SimpleFeature feature = (SimpleFeature) e.getObject();
@@ -65,5 +71,7 @@ public class SimpleGraph {
         };
 
         DijkstraShortestPathFinder pf = new DijkstraShortestPathFinder(graph, start, weighter);
+        pf.calculate();
+        return pf.getPath(end);
     }
 }

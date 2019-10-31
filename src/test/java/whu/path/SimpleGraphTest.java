@@ -11,7 +11,6 @@ import org.geotools.graph.structure.basic.BasicNode;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.primitive.Point;
 
-import java.util.Collection;
 import java.util.Vector;
 
 public class SimpleGraphTest {
