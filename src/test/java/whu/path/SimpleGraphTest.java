@@ -17,8 +17,8 @@ import java.util.Vector;
 public class SimpleGraphTest {
     public static void main(String[] args) {
         SimpleGraph sg = new SimpleGraph();
-        Collection<Node> nodes = new Vector<>();
-        Collection<Edge> edges = new Vector<>();
+        Vector<Node> nodes = new Vector<>();
+        Vector<Edge> edges = new Vector<>();
         Node node0 = new BasicNode();
         node0.setID(0);
         DirectPosition pos = new DirectPosition2D(0.5, 0.5);
@@ -42,6 +42,11 @@ public class SimpleGraphTest {
             edge.setVisited(true);
             edges.add(edge);
         }
+
+        edges.add(new BasicEdge(nodes.get(1), nodes.get(2)));
+        edges.add(new BasicEdge(nodes.get(2), nodes.get(3)));
+        edges.add(new BasicEdge(nodes.get(3), nodes.get(4)));
+        edges.add(new BasicEdge(nodes.get(4), nodes.get(1)));
 
         Graph graph = new BasicGraph();
         ((BasicGraph) graph).setNodes(nodes);
