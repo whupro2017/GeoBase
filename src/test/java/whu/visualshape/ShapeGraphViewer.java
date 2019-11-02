@@ -55,6 +55,8 @@ public class ShapeGraphViewer extends JComponent {
                 if (path.size() > maxsteps) {
                     maxPath = path;
                 }
+                if (maxPath.size() > 100)
+                    break;
             }
         }
         LOGGER.log(Level.INFO, maxPath.toString());
