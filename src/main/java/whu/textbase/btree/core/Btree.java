@@ -141,7 +141,9 @@ public class Btree<T extends Comparable<T>, V> {
     }
 
     @SuppressWarnings("unchecked") public V find(T key) {
-
+        if (root == null) {
+            return null;
+        }
         byte[] data = root.find(key, cache);
         if (data == null) {
             return null;
