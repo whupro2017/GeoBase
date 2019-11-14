@@ -3,7 +3,6 @@ package whu.textbase.btree.analyzer;
 import whu.utils.ConsoleColors;
 
 import java.io.BufferedReader;
-import java.io.Console;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
@@ -11,7 +10,7 @@ import java.util.*;
 public class JiebaTokenizerTest {
     private static final boolean pt = true;
     private static final boolean nonsubstr = true;
-    private static final String path = "./resources/texts/sz_poi/tencent.csv";
+    private static final String path = "./resources/texts/sz_poi/housingtencent.csv";
 
     private static class comp implements Comparator<String> {
         public int compare(String o1, String o2) {
