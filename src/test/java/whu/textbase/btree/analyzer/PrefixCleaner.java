@@ -37,9 +37,11 @@ public class PrefixCleaner {
             String key = fields[2].substring(0, pos);
             if (redcued) {
                 String[] adds = key.split("·");
-                if (adds.length > 1) key = adds[adds.length - 1];
+                if (adds.length > 1)
+                    key = adds[adds.length - 1];
             }
-            if (key.length() > 1) map.put(key, line);
+            if (key.length() > 1 && !key.equals("城市") && !key.equals("深圳市") && !key.equals("公寓") && !key.equals("宝安区") && !key.equals("住宅区") && !key.equals("坪山") && !key.equals("坪山区") && !key.equals("深圳") && !key.equals("龙岗区"))
+                map.put(key, line);
         }
         br.close();
         int count = 0;
