@@ -2,15 +2,14 @@ package whu.textbase.btree.analyzer;
 
 import whu.utils.ConsoleColors;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 public class JiebaTokenizerTest {
     private static final boolean pt = true;
     private static final boolean nonsubstr = true;
     private static final String path = "./resources/texts/sz_poi/housingtencent.csv";
+    private static final String outp = "./resources/texts/corpus/tokenset.txt";
 
     private static class comp implements Comparator<String> {
         public int compare(String o1, String o2) {
@@ -30,6 +29,7 @@ public class JiebaTokenizerTest {
             filter = argv[0];
         }
         BufferedReader br = new BufferedReader(new FileReader(path));
+        BufferedWriter bw = new BufferedWriter(new FileWriter(outp));
         JiebaTokenizer jt = new JiebaTokenizer();
         String line;
         int ln = 0;
@@ -75,7 +75,9 @@ public class JiebaTokenizerTest {
             if (pt) {
                 for (int i = 0; i < tokens.length; i++) {
                     System.out.print(ConsoleColors.RED + tokens[i] + "\t" + ConsoleColors.RESET);
+                    bw.write(tokens[i] + " ");
                 }
+                bw.write("\n");
                 System.out.println("\n");
             }
             ln++;
@@ -83,5 +85,6 @@ public class JiebaTokenizerTest {
         }
         System.out.println((filter != null ? filter : null) + "\t" + (System.currentTimeMillis() - begin) + "\t" + ln + "\t" + hit);
         br.close();
+        bw.close();
     }
 }

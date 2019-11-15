@@ -53,6 +53,7 @@ public class Btree<T extends Comparable<T>, V> {
         if (file.exists()) {
             file.delete();
         } else {
+            String apath = file.getAbsolutePath();
             if (!file.getParentFile().isDirectory()) {
                 file.getParentFile().mkdirs();
             }
