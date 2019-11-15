@@ -1,13 +1,18 @@
 package whu.textbase.idf.process;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.Buffer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import whu.textbase.btree.api.iSelect;
 import whu.textbase.idf.storage.index.prefix.IdfPrefMergeIndex;
+import whu.utils.ConsoleColors;
 
 public class IdfExPrefTest {
 
@@ -63,7 +68,7 @@ public class IdfExPrefTest {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
+        buildMap(queryPath);
         int findTimes = queryList.size();
         List<Integer> resultList = new ArrayList<Integer>();
         System.out.println("Pruning ext threshold=" + threshold + " qExtendedNum=" + qExtendedNum + " rExtendedNum="
@@ -74,6 +79,8 @@ public class IdfExPrefTest {
         for (int i = 0; i < findTimes; i++) {
             // System.out.println(reader.getQueryList().get(i));
             resultList = select.find(queryList.get(i), threshold);
+            if (resultList.size() > 30)
+                System.out.println("\t" + i + ": " + resultList.size() + "\t" + ConsoleColors.BLUE + getString(i) + ConsoleColors.RESET + ": " + ConsoleColors.RED + getString(resultList.get(29)) + ConsoleColors.RESET);
             resultCount += resultList.size();
             //            System.out.println(resultList.size());
         }
@@ -98,4 +105,23 @@ public class IdfExPrefTest {
         System.out.println();
     }
 
+    private static Map<Integer, String> idxTextMap = new HashMap<>();
+
+    private static void buildMap(String path) {
+        try {
+            BufferedReader brs = new BufferedReader(new FileReader(path.substring(0, path.length() - 4)));
+            String line;
+            int idx = 0;
+            while ((line = brs.readLine()) != null) {
+                idxTextMap.put(idx++, line);
+            }
+            brs.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static String getString(int idx) {
+        return idxTextMap.get(idx);
+    }
 }
