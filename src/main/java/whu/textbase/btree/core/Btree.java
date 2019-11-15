@@ -140,7 +140,8 @@ public class Btree<T extends Comparable<T>, V> {
         }
     }
 
-    @SuppressWarnings("unchecked") public V find(T key) {
+    @SuppressWarnings("unchecked")
+    public V find(T key) {
         if (root == null) {
             return null;
         }
@@ -172,7 +173,8 @@ public class Btree<T extends Comparable<T>, V> {
         }
     }
 
-    @SuppressWarnings("unchecked") public int getHeight() {
+    @SuppressWarnings("unchecked")
+    public int getHeight() {
         int height = 1;
         iNode node = root;
         while (!(node instanceof Btree.LeafNode)) {
@@ -244,7 +246,6 @@ public class Btree<T extends Comparable<T>, V> {
         }
 
         root = null;
-
     }
 
     public void readMeta(String path) {
@@ -319,7 +320,8 @@ public class Btree<T extends Comparable<T>, V> {
         return new InnerReverseIterator();
     }
 
-    @SuppressWarnings("unchecked") private void loadNode(iNode node) {
+    @SuppressWarnings("unchecked")
+    private void loadNode(iNode node) {
         if (node instanceof Btree.LeafNode) {
             LeafNode leafNode = (LeafNode) node;
             for (int i = 0; i < leafNode.size; i++) {
@@ -336,7 +338,8 @@ public class Btree<T extends Comparable<T>, V> {
         loadNode(root);
     }
 
-    @SuppressWarnings("unchecked") private void loadNodeRestrict(iNode node) {
+    @SuppressWarnings("unchecked")
+    private void loadNodeRestrict(iNode node) {
         if (node instanceof Btree.LeafNode) {
             return;
         }
@@ -352,7 +355,8 @@ public class Btree<T extends Comparable<T>, V> {
         loadNodeRestrict(root);
     }
 
-    @SuppressWarnings("unchecked") private class InnerIterator implements Iterator<IteratorEntry<T, V>> {
+    @SuppressWarnings("unchecked")
+    private class InnerIterator implements Iterator<IteratorEntry<T, V>> {
         private LeafNode curNode;
         private int curIndex;
 
@@ -361,7 +365,8 @@ public class Btree<T extends Comparable<T>, V> {
             curIndex = 0;
         }
 
-        @Override public boolean hasNext() {
+        @Override
+        public boolean hasNext() {
             // TODO Auto-generated method stub
             if (curIndex >= curNode.size) {
                 return false;
@@ -369,7 +374,8 @@ public class Btree<T extends Comparable<T>, V> {
             return true;
         }
 
-        @Override public IteratorEntry<T, V> next() {
+        @Override
+        public IteratorEntry<T, V> next() {
             // TODO Auto-generated method stub
             List<byte[]> resultList = new ArrayList<byte[]>();
             byte[] temp;
@@ -422,7 +428,8 @@ public class Btree<T extends Comparable<T>, V> {
 
     }
 
-    @SuppressWarnings("unchecked") private class InnerReverseIterator implements Iterator<IteratorEntry<T, V>> {
+    @SuppressWarnings("unchecked")
+    private class InnerReverseIterator implements Iterator<IteratorEntry<T, V>> {
         private LeafNode curNode;
         private int curIndex;
 
@@ -431,7 +438,8 @@ public class Btree<T extends Comparable<T>, V> {
             curIndex = curNode.size - 1;
         }
 
-        @Override public boolean hasNext() {
+        @Override
+        public boolean hasNext() {
             // TODO Auto-generated method stub
             if (curIndex < 0) {
                 return false;
@@ -439,7 +447,8 @@ public class Btree<T extends Comparable<T>, V> {
             return true;
         }
 
-        @Override public IteratorEntry<T, V> next() {
+        @Override
+        public IteratorEntry<T, V> next() {
             // TODO Auto-generated method stub
             List<byte[]> resultList = new ArrayList<byte[]>();
             byte[] temp;
@@ -493,7 +502,7 @@ public class Btree<T extends Comparable<T>, V> {
     }
 
     public Btree(List<Btree<T, V>> btreeList, int nodeNumOfBlock, String path, int treecachesize, int blocksize,
-            int datacachesize, float cachefac) {
+                 int datacachesize, float cachefac) {
         this(nodeNumOfBlock, path, treecachesize, blocksize, datacachesize, cachefac);
         PriorityQueue<MergeEntry<T, V>> entryHeap = new PriorityQueue<MergeEntry<T, V>>(btreeList.size());
         List<Iterator<IteratorEntry<T, V>>> iteratorList = new ArrayList<Iterator<IteratorEntry<T, V>>>();
@@ -516,7 +525,8 @@ public class Btree<T extends Comparable<T>, V> {
         }
     }
 
-    @SuppressWarnings("unchecked") private void printNode(iNode node) {
+    @SuppressWarnings("unchecked")
+    private void printNode(iNode node) {
         if (node == null) {
             return;
         }
@@ -597,7 +607,8 @@ public class Btree<T extends Comparable<T>, V> {
             this.keys = new Object[keyNum];
         }
 
-        @SuppressWarnings("unchecked") public iNode insert(T key, long pointer, TreeCache cache) {
+        @SuppressWarnings("unchecked")
+        public iNode insert(T key, long pointer, TreeCache cache) {
             int pos = -1;
             if (this.size == 0 || key.compareTo((T) this.keys[0]) < 0) {
                 pos = 0;
@@ -615,7 +626,8 @@ public class Btree<T extends Comparable<T>, V> {
             return node;
         }
 
-        @SuppressWarnings("unchecked") iNode insert(T key, int leftChild, int rightChild, TreeCache cache) {
+        @SuppressWarnings("unchecked")
+        iNode insert(T key, int leftChild, int rightChild, TreeCache cache) {
             this.setChanged(true);
             this.setBusy(true);
             if (this.size == 0) {
@@ -691,7 +703,8 @@ public class Btree<T extends Comparable<T>, V> {
             return node;
         }
 
-        @SuppressWarnings("unchecked") public byte[] find(T key, TreeCache cache) {
+        @SuppressWarnings("unchecked")
+        public byte[] find(T key, TreeCache cache) {
             int middle = Utils.bSearch(this.keys, 0, this.size, key);
             iNode child;
             int length = 0;
@@ -875,7 +888,8 @@ public class Btree<T extends Comparable<T>, V> {
             this.keys = new Object[keyNum - 1];
         }
 
-        @SuppressWarnings("unchecked") public iNode insert(T key, long pointer, TreeCache cache) {
+        @SuppressWarnings("unchecked")
+        public iNode insert(T key, long pointer, TreeCache cache) {
             this.setChanged(true);
             this.setBusy(true);
             Object[] newKeys = new Object[keyNum];
@@ -942,7 +956,8 @@ public class Btree<T extends Comparable<T>, V> {
             return node;
         }
 
-        @SuppressWarnings("unchecked") public byte[] find(T key, TreeCache cache) {
+        @SuppressWarnings("unchecked")
+        public byte[] find(T key, TreeCache cache) {
             if (this.size == 0) {
                 return null;
             }
@@ -1125,7 +1140,7 @@ public class Btree<T extends Comparable<T>, V> {
         public DataCache datacache;
 
         public TreeCache(int treecachesize, int datacachesize, float cachefac, RandomAccessFile raf,
-                int nodeNumOfBlock) {
+                         int nodeNumOfBlock) {
             leafoff = leafno = interoff = dataoff = 0;
             leafno = 1;
             datano = 2;
@@ -1659,7 +1674,8 @@ public class Btree<T extends Comparable<T>, V> {
             Integer key;
             iNode value;
 
-            @Override public String toString() {
+            @Override
+            public String toString() {
                 return "Pair [key=" + key + "]";
             }
         }
@@ -1899,7 +1915,8 @@ public class Btree<T extends Comparable<T>, V> {
             return value;
         }
 
-        @Override public String toString() {
+        @Override
+        public String toString() {
             return "Entry [key=" + key + ", value=" + value + "]";
         }
 
@@ -1928,11 +1945,13 @@ public class Btree<T extends Comparable<T>, V> {
             return index;
         }
 
-        @Override public String toString() {
+        @Override
+        public String toString() {
             return "Entry [key=" + key + ", value=" + value + "]";
         }
 
-        @Override public int compareTo(MergeEntry<T, V> o) {
+        @Override
+        public int compareTo(MergeEntry<T, V> o) {
             // TODO Auto-generated method stub
             return key.compareTo(o.key);
         }

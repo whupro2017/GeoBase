@@ -9,9 +9,8 @@ import java.util.Collection;
 import java.util.Iterator;
 
 public class VoronoiDiagramTest {
-    private static int cnt = 0;
-
-    @Test public void ProcessTest() {
+    @Test
+    public void ProcessTest() {
         ShapePoint sp = new ShapePoint();
         VoronoiDiagram vd = new VoronoiDiagram(sp.getSimpleFeatureCollection());
         Collection<Geometry> geometries = vd.getGeometries();
@@ -19,7 +18,6 @@ public class VoronoiDiagramTest {
         while (iterator.hasNext()) {
             Geometry geometry = iterator.next();
             Coordinate[] coords = geometry.getCoordinates();
-            int i = 0;
         }
         sp.close();
     }

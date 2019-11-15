@@ -25,7 +25,8 @@ public class ShapePointViewer extends JComponent {
         this.shapePoint = shapePoint;
     }
 
-    @Override public void paint(Graphics g) {
+    @Override
+    public void paint(Graphics g) {
         Collection<Point> points = shapePoint.getPointList();
         double minLongitude = Double.MAX_VALUE;
         double minLatitude = Double.MAX_VALUE;

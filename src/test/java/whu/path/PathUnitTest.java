@@ -31,7 +31,8 @@ public class PathUnitTest {
     SimpleFeatureCollection simFeatureCollect;
     Graph graph;
 
-    @Before public void initGraph() throws Exception {
+    @Before
+    public void initGraph() throws Exception {
         dataSource = ShapeFileManager.getFeatureSource(path);
         simFeatureCollect = dataSource.getFeatures();
 
@@ -49,7 +50,8 @@ public class PathUnitTest {
         graph = featureGen.getGraph();
     }
 
-    @Test public void tracerseTest() throws Exception {
+    @Test
+    public void tracerseTest() throws Exception {
         class OrphanVisitor implements GraphVisitor {
             private int count = 0;
 
@@ -78,7 +80,8 @@ public class PathUnitTest {
         assert (graphVisitor.getCount() == 0);
     }
 
-    @Test public void DijkstraTest() throws Exception {
+    @Test
+    public void DijkstraTest() throws Exception {
         DijkstraIterator.EdgeWeighter weighter = new DijkstraIterator.EdgeWeighter() {
             public double getWeight(Edge e) {
                 SimpleFeature feature = (SimpleFeature) e.getObject();
@@ -109,7 +112,8 @@ public class PathUnitTest {
         }
     }
 
-    @After public void disposeGraph() throws Exception {
+    @After
+    public void disposeGraph() throws Exception {
         ShapeFileManager.disposeFeatureSource(dataSource);
     }
 }

@@ -9,7 +9,8 @@ public class ShapePointTest {
 
     private static int cnt = 0;
 
-    @Test public void NameTest() {
+    @Test
+    public void NameTest() {
         ShapePoint sp = new ShapePoint();
         while (sp.hasNext()) {
             System.out.println(cnt++ + ":" + sp.next());
@@ -17,7 +18,8 @@ public class ShapePointTest {
         sp.close();
     }
 
-    @Test public void AllPointsTest() {
+    @Test
+    public void AllPointsTest() {
         for (File file : new File("./resources/shapes/sz_shp").listFiles()) {
             if (file.getAbsolutePath().contains("point") && file.getAbsolutePath().endsWith(".shp")) {
                 System.out.println(ConsoleColors.RED + file.getAbsolutePath() + ConsoleColors.RESET);

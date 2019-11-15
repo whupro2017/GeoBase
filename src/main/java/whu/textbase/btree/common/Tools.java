@@ -1,5 +1,25 @@
 package whu.textbase.btree.common;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import whu.textbase.btree.analyzer.IMDBGramTokenizer;
 import whu.textbase.btree.api.iTokenizer;
 import whu.textbase.btree.core.BtreeCluster;
@@ -10,12 +30,15 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
-import java.io.*;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 public class Tools {
+    public enum FuncType {
+        l2,
+        wc,
+        wj,
+        wd
+    }
+
+    public static FuncType func = FuncType.l2;
 
     public static Map<Integer, Double> idfCompute(Map<Integer, Integer> freqMap, int totalDocNum) {
         Map<Integer, Double> idfMap = new HashMap<Integer, Double>();
@@ -54,6 +77,78 @@ public class Tools {
         return Math.sqrt(accu);
     }
 
+    public static Double wCompute(List<Integer> strList, BtreeCluster<Integer, Double> idfBtree) {
+        Double accu = .0;
+        for (int i = 0; i < strList.size(); i++) {
+            accu += idfBtree.find(strList.get(i));
+        }
+        return accu;
+    }
+
+    public static Double wCompute(List<Integer> strList, Map<Integer, Double> idfMap) {
+        Double accu = .0;
+        for (int i = 0; i < strList.size(); i++) {
+            accu += idfMap.get(strList.get(i));
+        }
+        return accu;
+    }
+
+    public static Double awCompute(List<Integer> strList, BtreeCluster<Integer, Double> idfBtree) {
+        switch (func) {
+            case l2:
+                return l2Compute(strList, idfBtree);
+            case wc:
+            case wj:
+            case wd:
+                return wCompute(strList, idfBtree);
+            default:
+                System.err.println("Not support type: " + func);
+                return -1.0;
+        }
+    }
+
+    public static Double awCompute(List<Integer> strList, Map<Integer, Double> idfMap) {
+        switch (func) {
+            case l2:
+                return l2Compute(strList, idfMap);
+            case wc:
+            case wj:
+            case wd:
+                return wCompute(strList, idfMap);
+            default:
+                System.err.println("Not support type: " + func);
+                return -1.0;
+        }
+    }
+
+    public static Double cbCompute(double tokenWeight) {
+        switch (func) {
+            case l2:
+                return tokenWeight * tokenWeight;
+            case wc:
+            case wj:
+            case wd:
+                return tokenWeight;
+            default:
+                System.err.println("Not support type: " + func);
+                return -1.0;
+        }
+    }
+
+    public static Double twCompute(double totalWeight) {
+        switch (func) {
+            case l2:
+                return Math.sqrt(totalWeight);
+            case wc:
+            case wj:
+            case wd:
+                return totalWeight;
+            default:
+                System.err.println("Not support type: " + func);
+                return -1.0;
+        }
+    }
+
     public static Double tfIdfLengthCompute(List<TfTokenPair> strList, Map<Integer, Double> idfMap) {
         Double accu = 0.0;
         for (int i = 0; i < strList.size(); i++) {
@@ -80,7 +175,7 @@ public class Tools {
     }
 
     public static Double partialContributeCompute(int token, Double lens, Double lenq,
-            BtreeCluster<Integer, IdfHeadTuple> tokenBtree) {
+                                                  BtreeCluster<Integer, IdfHeadTuple> tokenBtree) {
         double idf = tokenBtree.find(token).idf;
         return idf * idf / (lens * lenq);
     }
@@ -143,7 +238,7 @@ public class Tools {
     }
 
     public static void imdbDataFormat(String moviePath, String actorPath, String destPath, int gramNum, int recordNum,
-            double ratio) {
+                                      double ratio) {
         try {
             BufferedReader movieReader = new BufferedReader(new FileReader(moviePath));
             BufferedReader actorReader = new BufferedReader(new FileReader(actorPath));
@@ -224,8 +319,8 @@ public class Tools {
                 String line = null;
                 while ((line = srcReader.readLine()) != null) {
                     if (line.trim().startsWith("<ArticleTitle>")) {
-                        destWriter.write(line.trim().replaceAll("(?:<ArticleTitle>|</ArticleTitle>|\\.|,|\\?|!)", "")
-                                + "\n");
+                        destWriter.write(
+                                line.trim().replaceAll("(?:<ArticleTitle>|</ArticleTitle>|\\.|,|\\?|!)", "") + "\n");
                         count++;
                     }
                     //                    if (line.trim().startsWith("<AbstractText>")) {
@@ -353,7 +448,7 @@ public class Tools {
     }
 
     public static void stopWordsDel(String srcPath, String destPath, String swPath, String regex, int num,
-            int lengthMin) {
+                                    int lengthMin) {
         try {
             BufferedReader srcReader = new BufferedReader(new FileReader(srcPath));
             BufferedReader swReader = new BufferedReader(new FileReader(swPath));
