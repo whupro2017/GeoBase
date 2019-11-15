@@ -11,7 +11,9 @@ import whu.path.ShapeFileManager;
 import whu.utils.ConsoleColors;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,6 +29,10 @@ public class ShapePoint implements Iterator<String> {
     private SimpleFeatureCollection fc;
 
     SimpleFeatureIterator iterator;
+
+    private List<Point> pointList;
+
+    private List<String> fieldsList;
 
     public ShapePoint() {
         try {
@@ -74,19 +80,53 @@ public class ShapePoint implements Iterator<String> {
 
     @Override public String next() {
         SimpleFeature feature = iterator.next();
-        Attribute name = (Attribute) feature.getProperty("NAME");
-        Attribute kind = (Attribute) feature.getProperty("KIND");
         Point point = (Point) feature.getDefaultGeometry();
         String output = "";
         if (point != null) {
             output += point.getX() + "," + point.getY();
         }
+        output += ",";
+        output += getAllFieldsAsString(feature);
+        return output;
+    }
+
+    private String getAllFieldsAsString(SimpleFeature feature) {
+        String output = "";
+        Attribute name = (Attribute) feature.getProperty("NAME");
+        Attribute kind = (Attribute) feature.getProperty("KIND");
         if (name != null) {
-            output += "," + name.getValue().toString();
+            output += name.getValue().toString();
         }
         if (kind != null) {
             output += "," + kind.getValue().toString();
         }
         return output;
+    }
+
+    public void export() {
+        pointList = new ArrayList<>();
+        fieldsList = new ArrayList<>();
+        SimpleFeatureIterator iter = fc.features();
+        while (iter.hasNext()) {
+            SimpleFeature feature = iter.next();
+            pointList.add((Point) feature.getDefaultGeometry());
+            fieldsList.add(getAllFieldsAsString(feature));
+        }
+    }
+
+    public List<Point> getPointList() {
+        if (pointList == null)
+            export();
+        return pointList;
+    }
+
+    public List<String> getFieldsList() {
+        if (fieldsList == null)
+            export();
+        return fieldsList;
+    }
+
+    public SimpleFeatureCollection getSimpleFeatureCollection() {
+        return fc;
     }
 }
