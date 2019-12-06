@@ -1,7 +1,5 @@
 package whu.textbase.btree.analyzer;
 
-import whu.textbase.btree.utils.btree.BtreeClusterSp;
-
 import java.io.*;
 import java.util.*;
 
