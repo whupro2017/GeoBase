@@ -1,7 +1,5 @@
 package whu.websource;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Ordering;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import org.jsoup.Jsoup;
@@ -231,6 +229,6 @@ public class DxyCrawler {
         Timer timer = new Timer();
         TimerTask task = new Helper();
 
-        timer.schedule(task, 2000, 5000);
+        timer.schedule(task, 2000, 120000);
     }
 }
