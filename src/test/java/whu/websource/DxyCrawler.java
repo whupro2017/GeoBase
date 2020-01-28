@@ -74,7 +74,10 @@ class Helper extends TimerTask {
                 httpURLConn.disconnect();
             }
         }
-        return buffer.toString();
+        if (buffer == null)
+            return null;
+        else
+            return buffer.toString();
     }
 
     private static boolean tryUpdate(HashMap<String, Integer> map, String key, Integer value, String province) {
@@ -153,7 +156,7 @@ class Helper extends TimerTask {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm");
         String cdate = formatter.format(date);
         provinceConfirmed = sortByValues(provinceConfirmed);
-        if (firstRun) {
+        {
             String title = ",";
             for (String pName : provinceConfirmed.keySet()) {
                 title += pName;
@@ -215,7 +218,14 @@ class Helper extends TimerTask {
     }
 
     public void run() {
-        String content = httpRequest("http://3g.dxy.cn/newh5/view/pneumonia");
+        String content = null;
+        while ((content = httpRequest("http://3g.dxy.cn/newh5/view/pneumonia")) == null) {
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         if (htmlFiter(content)) {
             dumpSlice();
         }
@@ -229,6 +239,6 @@ public class DxyCrawler {
         Timer timer = new Timer();
         TimerTask task = new Helper();
 
-        timer.schedule(task, 2000, 120000);
+        timer.schedule(task, 5000, 120000);
     }
 }
