@@ -219,7 +219,7 @@ class Helper extends TimerTask {
 
     public void run() {
         String content = null;
-        while ((content = httpRequest("http://3g.dxy.cn/newh5/view/pneumonia")) == null) {
+        while ((content = httpRequest("https://ncov.dxy.cn/ncovh5/view/pneumonia")) == null) {
             try {
                 Thread.sleep(5000);
             } catch (InterruptedException e) {
