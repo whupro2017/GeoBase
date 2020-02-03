@@ -110,24 +110,24 @@ class Helper extends TimerTask {
             for (JsonElement province : object.getAsJsonArray()) {
                 String provinceShortName = province.getAsJsonObject().get("provinceShortName").getAsString();
                 int provinceConfirm = province.getAsJsonObject().get("confirmedCount").getAsInt();
-                modified = tryUpdate(provinceConfirmed, provinceShortName, provinceConfirm, null);
+                modified |= tryUpdate(provinceConfirmed, provinceShortName, provinceConfirm, null);
                 int provinceSuspect = province.getAsJsonObject().get("suspectedCount").getAsInt();
-                modified = tryUpdate(provinceSuspected, provinceShortName, provinceSuspect, null);
+                modified |= tryUpdate(provinceSuspected, provinceShortName, provinceSuspect, null);
                 int provinceCure = province.getAsJsonObject().get("curedCount").getAsInt();
-                modified = tryUpdate(provinceCured, provinceShortName, provinceCure, null);
+                modified |= tryUpdate(provinceCured, provinceShortName, provinceCure, null);
                 int provinceDead = province.getAsJsonObject().get("deadCount").getAsInt();
-                modified = tryUpdate(provinceDeath, provinceShortName, provinceDead, null);
+                modified |= tryUpdate(provinceDeath, provinceShortName, provinceDead, null);
                 JsonElement cities = province.getAsJsonObject().get("cities");
                 for (JsonElement city : cities.getAsJsonArray()) {
                     String cityName = city.getAsJsonObject().get("cityName").getAsString();
                     int cityConfirm = city.getAsJsonObject().get("confirmedCount").getAsInt();
-                    modified = tryUpdate(cityConfirmed, cityName, cityConfirm, provinceShortName);
+                    modified |= tryUpdate(cityConfirmed, cityName, cityConfirm, provinceShortName);
                     int citySuspect = city.getAsJsonObject().get("suspectedCount").getAsInt();
-                    modified = tryUpdate(citySuspected, cityName, citySuspect, provinceShortName);
+                    modified |= tryUpdate(citySuspected, cityName, citySuspect, provinceShortName);
                     int cityCure = city.getAsJsonObject().get("curedCount").getAsInt();
-                    modified = tryUpdate(cityCured, cityName, cityCure, provinceShortName);
+                    modified |= tryUpdate(cityCured, cityName, cityCure, provinceShortName);
                     int cityDead = city.getAsJsonObject().get("deadCount").getAsInt();
-                    modified = tryUpdate(cityDeath, cityName, cityDead, provinceShortName);
+                    modified |= tryUpdate(cityDeath, cityName, cityDead, provinceShortName);
                 }
             }
         } catch (Exception e) {
