@@ -23,11 +23,12 @@ public class BaiduFlowTest {
 
     public static void main(String[] args) throws IOException {
         if (args.length < 3) {
-            System.out.println("Command province(boolen) beginYear(int)");
-            province = Boolean.parseBoolean(args[0]);
-            movinout = Boolean.parseBoolean(args[1]);
-            beginYear = Integer.parseInt(args[2]);
+            System.out.println("Command province(boolean) moveinout(boolean) beginYear(int)");
+            System.exit(-1);
         }
+        province = Boolean.parseBoolean(args[0]);
+        movinout = Boolean.parseBoolean(args[1]);
+        beginYear = Integer.parseInt(args[2]);
         BufferedReader br = new BufferedReader(new FileReader("./resources/citycode.txt"));
         String line;
         int lc = 0;
@@ -35,7 +36,7 @@ public class BaiduFlowTest {
         while ((line = br.readLine()) != null) {
             String[] fields = line.split("\t");
             if (lc++ > 0) {
-                for (int y = beginYear; y < 2020; y++) {
+                for (int y = beginYear; y < 2021; y++) {
                     String yearString = "";
                     yearString += y;
                     boolean isEven = (y % 4 == 0) ? true : false;
