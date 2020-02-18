@@ -19,16 +19,22 @@ public class BaiduFlowTest {
     };
     private static boolean province = true;
     private static boolean movinout = true;
-    private static int beginYear = 2016;
+    //private static int beginYear = 2016;
+    private static String year;
+    private static String month;
+    private static String day;
 
     public static void main(String[] args) throws IOException {
-        if (args.length < 3) {
-            System.out.println("Command province(boolean) moveinout(boolean) beginYear(int)");
+        if (args.length < 5) {
+            System.out.println("Command province(boolean) moveinout(boolean) year(string) month(string) day(string)");
             System.exit(-1);
         }
         province = Boolean.parseBoolean(args[0]);
         movinout = Boolean.parseBoolean(args[1]);
-        beginYear = Integer.parseInt(args[2]);
+        //beginYear = Integer.parseInt(args[2]);
+        year = args[2];
+        month = args[3];
+        day = args[4];
         BufferedReader br = new BufferedReader(new FileReader("./resources/citycode.txt"));
         String line;
         int lc = 0;
@@ -36,7 +42,21 @@ public class BaiduFlowTest {
         while ((line = br.readLine()) != null) {
             String[] fields = line.split("\t");
             if (lc++ > 0) {
-                for (int y = beginYear; y < 2021; y++) {
+                System.out.println(fields[0]);
+                bf.setCitycode(Integer.parseInt(fields[0]));
+                bf.setDate(year + month + day);
+                bf.setProvince((province ? 1 : 0));
+                bf.setTypecode(movinout ? 0 : 1);
+                String ret = bf.action();
+                JSONObject jsonObject = (JSONObject) JSONObject.parse(ret);
+                if (jsonObject != null && jsonObject.get("errmsg") != null && jsonObject.get("errmsg").equals("SUCCESS")) {
+                    JSONObject data = jsonObject.getJSONObject("data");
+                    data.put("cityCode", fields[0].trim());
+                    data.put("cityName", fields[1].trim().substring(0, fields[1].trim().length() - 1));
+                    System.out.println(data);
+                    break;
+                }
+                /*for (int y = beginYear; y < 2021; y++) {
                     String yearString = "";
                     yearString += y;
                     boolean isEven = (y % 4 == 0) ? true : false;
@@ -72,7 +92,7 @@ public class BaiduFlowTest {
                             System.out.println(dateString);
                         }
                     }
-                }
+                }*/
                 //System.out.println(ret);
             }
         }
