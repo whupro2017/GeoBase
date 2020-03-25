@@ -42,7 +42,7 @@ public class BaiduFlowTest {
         while ((line = br.readLine()) != null) {
             String[] fields = line.split("\t");
             if (lc++ > 0) {
-                System.out.println(fields[0]);
+                /*System.out.println(fields[0]);
                 bf.setCitycode(Integer.parseInt(fields[0]));
                 bf.setDate(year + month + day);
                 bf.setProvince((province ? 1 : 0));
@@ -55,7 +55,28 @@ public class BaiduFlowTest {
                     data.put("cityName", fields[1].trim().substring(0, fields[1].trim().length() - 1));
                     System.out.println(data);
                     break;
+                }*/
+                String monthstring = "0" + month;
+                String daystring = "0" + day;
+                String dateString = year + monthstring.substring(monthstring.length() - 2) + daystring.substring(daystring.length() - 2);
+                for (int i = 0; i < 10; i++) {
+                    System.out.println(fields[0]);
+                    bf.setCitycode(Integer.parseInt(fields[0]));
+                    bf.setDate(dateString);
+                    bf.setProvince((province ? 1 : 0));
+                    bf.setTypecode(movinout ? 0 : 1);
+                    String ret = bf.action();
+                    JSONObject jsonObject = (JSONObject) JSONObject.parse(ret);
+                    if (jsonObject != null && jsonObject.get("errmsg") != null && jsonObject.get("errmsg").equals("SUCCESS")) {
+                        JSONObject data = jsonObject.getJSONObject("data");
+                        data.put("cityCode", fields[0].trim());
+                        data.put("cityName", fields[1].trim().substring(0, fields[1].trim().length() - 1));
+                        System.out.println(data);
+                        break;
+                    }
                 }
+                System.out.println(dateString);
+                break;
                 /*for (int y = beginYear; y < 2021; y++) {
                     String yearString = "";
                     yearString += y;
