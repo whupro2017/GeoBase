@@ -23,7 +23,7 @@ public class AddressLngLatExchanger {
     public static Map<String, Double> addressToLngAndLag(String address) {
         Map<String, Double> map = new HashMap<String, Double>();
         //"http://restapi.amap.com/v3/geocode/geo?address=上海市东方明珠&output=JSON&key=xxxxxxxxx";
-        String geturl = "http://restapi.amap.com/v3/geocode/geo?key=9ac90d41d649732b840fb59de296d287&address=" + address;
+        String geturl = "http://restapi.amap.com/v3/geocode/geo?key=7de8697669288fc848e12a08f58d995e&address=" + address;
         String location = "";
         try {
             URL url = new URL(geturl);    // 把字符串转换为URL请求地址
@@ -126,7 +126,7 @@ public class AddressLngLatExchanger {
             System.out.println(mapKey + ":" + mapValue);
         }*/
 
-        // transfer();
+        transfer();
         verify();
     }
 }
